@@ -1,0 +1,49 @@
+<resources>
+    <!-- Existing strings -->
+    <string name="app_name">Home1</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_mypage">MyPage</string>
+
+    <!-- Descriptions and Titles -->
+    <string name="banner_image_desc">Banner Image Description</string>
+    <string name="banner_content_title">Banner Content</string>
+
+    <!-- Image Descriptions -->
+    <string name="button1_desc">이미지 1의 설명</string>
+    <string name="button2_desc">이미지 2의 설명</string>
+    <string name="button3_desc">이미지 3의 설명</string>
+    <string name="button4_desc">이미지 4의 설명</string>
+    <string name="button5_desc">이미지 5의 설명</string>
+    <string name="button6_desc">이미지 6의 설명</string>
+
+    <!-- Write Post Activity -->
+    <string name="write_post_title">글을 작성하세요</string>
+
+    <!-- New Activity Titles -->
+    <string name="banner_content_activity_label">베너</string>
+    <string name="write_post_activity_label">글쓰기</string>
+    <string name="recent_items_activity_label">최근상품</string>
+
+    <!-- New Strings for Layout -->
+    <string name="recent_items_title">최근상품</string>
+    <string name="item1_desc">Item 1 Description</string>
+    <string name="item2_desc">Item 2 Description</string>
+    <string name="item3_desc">Item 3 Description</string>
+    <string name="item4_desc">Item 4 Description</string>
+
+    <!-- New Strings for Accessibility -->
+    <string name="back_button_desc">뒤로가기 버튼</string>
+    <string name="home_button_desc">홈 버튼</string>
+    <string name="recent_button_desc">최근상품 버튼</string>
+
+    <!-- Add the new strings for toolbar button -->
+    <string name="toolbar_button_desc">툴바 버튼</string>
+    <string name="fab_edit_desc">Edit</string>
+
+    <string name="welcome_mypage">Welcome to MyPage</string>
+
+    <string name="item_detail_activity_label">상품 상세 정보</string>
+
+</resources>

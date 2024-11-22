@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_edit"
+        android:icon="@drawable/edit"
+        android:title="수정" />
+
+    <!-- Delete option -->
+    <item
+        android:id="@+id/nav_delete"
+        android:icon="@drawable/delete"
+        android:title="삭제" />
+
+    <!-- Report option -->
+    <item
+        android:id="@+id/nav_report"
+        android:icon="@drawable/report"
+        android:title="신고" />
+
+</menu>

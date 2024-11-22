@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/top_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- AppName Logo -->
+            <TextView
+                android:id="@+id/app_name_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HomeThru"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"/>
+
+            <!-- SearchView -->
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search..."
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Clickable Button -->
+            <ImageButton
+                android:id="@+id/toolbar_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_share"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/toolbar_button_desc"
+                android:layout_gravity="center_vertical"
+                android:padding="16dp"
+                android:layout_marginEnd="16dp"/>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Container for buttons at the top -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/top_app_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@android:color/white">
+
+        <!-- Home Button -->
+        <android.widget.Button
+            android:id="@+id/home_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="홈"
+            android:textColor="@android:color/black"
+            android:background="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/recent_button"
+            app:layout_constraintWidth_percent="0.5"/>
+
+        <!-- Recent Items Button -->
+        <android.widget.Button
+            android:id="@+id/recent_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="최근상품"
+            android:textColor="@android:color/black"
+            android:background="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/home_button"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintWidth_percent="0.5"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ScrollView to contain scrollable content -->
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/button_container"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingBottom="16dp">
+
+        <!-- ConstraintLayout inside the ScrollView for content placement -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <!-- Banner ImageView -->
+            <ImageView
+                android:id="@+id/bannerImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/dog1"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/banner_image_desc"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <!-- Gray overlay rectangle -->
+            <View
+                android:id="@+id/gray_overlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/gray30_overlay"
+                app:layout_constraintTop_toTopOf="@id/bannerImageView"
+                app:layout_constraintBottom_toBottomOf="@id/bannerImageView"
+                app:layout_constraintStart_toStartOf="@id/bannerImageView"
+                app:layout_constraintEnd_toEndOf="@id/bannerImageView"
+                android:visibility="visible" />
+
+
+            <!-- TextView for text over banner -->
+            <TextView
+                android:id="@+id/banner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사전예약"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="@id/bannerImageView"
+                app:layout_constraintLeft_toLeftOf="@id/bannerImageView"
+                android:layout_margin="16dp" />
+
+            <!-- Horizontal Scrollable Layout for Images -->
+            <HorizontalScrollView
+                android:id="@+id/buttons_scroll_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/bannerImageView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:padding="16dp"
+                android:fillViewport="true"
+                android:layout_marginBottom="16dp">
+
+                <!-- ConstraintLayout for horizontal image alignment -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/buttons_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <!-- Image 1 -->
+                    <ImageView
+                        android:id="@+id/button1"
+                        android:layout_width="90dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/button1"
+                        android:contentDescription="@string/button1_desc"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_rectangle"
+                        android:clipToOutline="true"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/button2"/>
+
+                    <!-- Image 2 -->
+                    <ImageView
+                        android:id="@+id/button2"
+                        android:layout_width="90dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/button2"
+                        android:contentDescription="@string/button2_desc"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_rectangle"
+                        android:clipToOutline="true"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintLeft_toRightOf="@id/button1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/button3"/>
+
+                    <!-- Image 3 -->
+                    <ImageView
+                        android:id="@+id/button3"
+                        android:layout_width="90dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/button3"
+                        android:contentDescription="@string/button3_desc"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_rectangle"
+                        android:clipToOutline="true"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintLeft_toRightOf="@id/button2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/button4"/>
+
+                    <!-- Image 4 -->
+                    <ImageView
+                        android:id="@+id/button4"
+                        android:layout_width="90dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/button4"
+                        android:contentDescription="@string/button4_desc"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_rectangle"
+                        android:clipToOutline="true"
+                        app:layout_constraintLeft_toRightOf="@id/button3"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <!-- Text below button1 -->
+                    <TextView
+                        android:id="@+id/button1_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="가방"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/button1"
+                        app:layout_constraintLeft_toLeftOf="@id/button1"
+                        app:layout_constraintRight_toRightOf="@id/button1"
+                        android:layout_marginTop="8dp"/>
+
+                    <!-- Text below button2 -->
+                    <TextView
+                        android:id="@+id/button2_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="전자기기"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/button2"
+                        app:layout_constraintLeft_toLeftOf="@id/button2"
+                        app:layout_constraintRight_toRightOf="@id/button2"
+                        android:layout_marginTop="8dp"/>
+
+                    <!-- Text below button3 -->
+                    <TextView
+                        android:id="@+id/button3_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="운동화"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/button3"
+                        app:layout_constraintLeft_toLeftOf="@id/button3"
+                        app:layout_constraintRight_toRightOf="@id/button3"
+                        android:layout_marginTop="8dp"/>
+
+                    <!-- Text below button4 -->
+                    <TextView
+                        android:id="@+id/button4_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="의류"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/button4"
+                        app:layout_constraintLeft_toLeftOf="@id/button4"
+                        app:layout_constraintRight_toRightOf="@id/button4"
+                        android:layout_marginTop="8dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </HorizontalScrollView>
+
+            <!-- Additional ImageView -->
+            <ImageView
+                android:id="@+id/extraImageView"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:src="@drawable/cat2"
+                android:scaleType="centerCrop"
+                android:layout_margin="16dp"
+                app:layout_constraintTop_toBottomOf="@id/buttons_scroll_view"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintWidth_percent="1.0"/>
+
+
+            <!-- TextView for "최근상품" -->
+            <TextView
+                android:id="@+id/recent_items_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="최근상품"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/extraImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp" />
+
+            <!-- Button for "전체보기" -->
+            <Button
+                android:id="@+id/view_all_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체보기"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/extraImageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp" />
+
+            <!-- Horizontal Scrollable Layout for item images -->
+            <HorizontalScrollView
+                android:id="@+id/items_scroll_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/recent_items_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:padding="16dp"
+                android:fillViewport="true"
+                android:layout_marginBottom="16dp">
+
+                <!-- ConstraintLayout for horizontal image alignment -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <!-- Image 1 -->
+                    <ImageView
+                        android:id="@+id/item1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/item1"
+                        android:contentDescription="@string/item1_desc"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_rectangle_item"
+                        android:clipToOutline="true"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/item2"/>
+
+                    <!-- Image 2 -->
+                    <ImageView
+                        android:id="@+id/item2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/item2"
+                        android:contentDescription="@string/item2_desc"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_rectangle_item"
+                        android:clipToOutline="true"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintLeft_toRightOf="@id/item1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/item3"/>
+
+                    <!-- Image 3 -->
+                    <ImageView
+                        android:id="@+id/item3"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/item3"
+                        android:contentDescription="@string/item3_desc"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_rectangle_item"
+                        android:clipToOutline="true"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintLeft_toRightOf="@id/item2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/item4"/>
+
+                    <!-- Image 4 -->
+                    <ImageView
+                        android:id="@+id/item4"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/item4"
+                        android:contentDescription="@string/item4_desc"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_rectangle_item"
+                        android:clipToOutline="true"
+                        app:layout_constraintLeft_toRightOf="@id/item3"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <!-- Text below item1 -->
+                    <TextView
+                        android:id="@+id/item1_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="가방"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/item1"
+                        app:layout_constraintLeft_toLeftOf="@id/item1"
+                        app:layout_constraintRight_toRightOf="@id/item1"
+                        android:layout_marginTop="8dp"/>
+
+                    <!-- Text below item2 -->
+                    <TextView
+                        android:id="@+id/item2_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="전자기기"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/item2"
+                        app:layout_constraintLeft_toLeftOf="@id/item2"
+                        app:layout_constraintRight_toRightOf="@id/item2"
+                        android:layout_marginTop="8dp"/>
+
+                    <!-- Text below item3 -->
+                    <TextView
+                        android:id="@+id/item3_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="운동화"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/item3"
+                        app:layout_constraintLeft_toLeftOf="@id/item3"
+                        app:layout_constraintRight_toRightOf="@id/item3"
+                        android:layout_marginTop="8dp"/>
+
+                    <!-- Text below item4 -->
+                    <TextView
+                        android:id="@+id/item4_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="의류"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toBottomOf="@id/item4"
+                        app:layout_constraintLeft_toLeftOf="@id/item4"
+                        app:layout_constraintRight_toRightOf="@id/item4"
+                        android:layout_marginTop="8dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </HorizontalScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <!-- BottomNavigationView -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+    <!-- FloatingActionButton -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="bottom|end"
+        android:src="@android:drawable/ic_menu_edit"
+        android:contentDescription="@string/fab_edit_desc"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
