@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Toolbar 설정 -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:title="투표"
+        android:titleTextColor="@android:color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:navigationIcon="@android:drawable/ic_menu_more" />
+
+
+    <!-- 투표 제목 -->
+    <TextView
+        android:id="@+id/pollTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="투표 제목"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+    <!-- 투표 설명 -->
+    <TextView
+        android:id="@+id/pollDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="투표 설명"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp" />
+
+    <!-- 선택지 레이아웃 -->
+    <LinearLayout
+        android:id="@+id/optionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+        <!-- 선택지와 퍼센트가 동적으로 추가될 위치 -->
+    </LinearLayout>
+
+    <!-- ProgressBar 추가 -->
+    <ProgressBar
+        android:id="@+id/voteProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:visibility="gone"
+        android:layout_marginTop="16dp" />
+
+    <!-- 투표 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/submitVoteButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="투표"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/resetVoteButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="재투표"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <!-- 댓글 입력 -->
+    <EditText
+        android:id="@+id/commentInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="댓글을 입력하세요"
+        android:layout_marginTop="16dp"
+        android:minHeight="48dp" />
+
+    <!-- 댓글 작성 버튼 -->
+    <Button
+        android:id="@+id/submitCommentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="댓글 작성"
+        android:layout_marginTop="8dp" />
+
+    <!-- 댓글 목록 -->
+    <LinearLayout
+        android:id="@+id/commentsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+    </LinearLayout>
+
+</LinearLayout>
