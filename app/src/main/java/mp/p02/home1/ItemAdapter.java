@@ -2,6 +2,7 @@ package mp.p02.home1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
@@ -23,8 +23,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     public ItemAdapter(Context context, List<Item> itemList) {
         this.context = context;
-        this.itemList = itemList != null ? itemList : new ArrayList<>(); // null 체크 및 초기화
-        this.dbHelper = new ItemDatabaseHelper(context); // 데이터베이스 헬퍼 초기화
+        this.itemList = itemList;
+        this.dbHelper = new ItemDatabaseHelper(context);
     }
 
     @NonNull
@@ -38,73 +38,61 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, int position) {
         final Item item = itemList.get(position);
 
-        // 아이템의 제목과 설명 설정
+        // 아이템의 제목과 내용 설정
         holder.itemTitle.setText(item.getTitle());
         holder.itemDescription.setText(item.getContent());
 
-        // 이미지가 있으면 설정, 없으면 기본 리소스 사용
+        // 이미지 설정
         if (item.getImageUri() != null) {
             holder.itemImage.setImageURI(item.getImageUri());
         } else {
-            holder.itemImage.setImageResource(item.getImageResource());
+            // 기본 이미지 설정
+            holder.itemImage.setImageResource(R.drawable.button1);
         }
 
         // 하트 버튼 초기 상태 설정
         holder.heartButton.setImageResource(item.isFavorite() ? R.drawable.heart_fill : R.drawable.heart_empty);
 
-        // 하트 버튼 클릭 이벤트 처리
-        holder.heartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isFavorite = item.isFavorite();
-                item.setFavorite(!isFavorite);
+        // 하트 버튼 클릭 이벤트
+        holder.heartButton.setOnClickListener(v -> {
+            boolean isFavorite = item.isFavorite();
+            item.setFavorite(!isFavorite);
 
-                // 하트 상태를 데이터베이스에 업데이트
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        dbHelper.updateHeartState(item.getId(), !isFavorite); // updateHeartState 호출
-                    }
-                }).start();
+            // 데이터베이스 업데이트
+            new Thread(() -> dbHelper.updateHeartState(item.getId(), !isFavorite)).start();
 
-                // UI 업데이트
-                holder.heartButton.setImageResource(item.isFavorite() ? R.drawable.heart_fill : R.drawable.heart_empty);
-            }
+            // UI 업데이트
+            holder.heartButton.setImageResource(item.isFavorite() ? R.drawable.heart_fill : R.drawable.heart_empty);
         });
 
-        // 아이템 이미지를 클릭하면 상세 페이지로 이동
-        holder.itemImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ItemDetailActivity.class);
-
-                // item_id와 함께 제목, 내용, 이미지 정보를 전달
-                intent.putExtra("item_id", item.getId()); // item_id 전달
-                intent.putExtra("item_title", item.getTitle());
-                intent.putExtra("item_content", item.getContent());
-
-                if (item.getImageUri() != null) {
-                    intent.putExtra("item_image_uri", item.getImageUri().toString());
-                } else {
-                    intent.putExtra("item_image_resource", item.getImageResource());
-                }
-
-                context.startActivity(intent);
+        // 아이템 클릭 이벤트 -> 상세 페이지로 이동
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ItemDetailActivity.class);
+            intent.putExtra("item_id", item.getId());
+            intent.putExtra("item_title", item.getTitle());
+            intent.putExtra("item_content", item.getContent());
+            if (item.getImageUri() != null) {
+                intent.putExtra("item_image_uri", item.getImageUri().toString());
             }
+            context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return itemList != null ? itemList.size() : 0; // null 체크 및 안전한 접근
+        return itemList != null ? itemList.size() : 0;
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+    public void updateItems(List<Item> newItems) {
+        this.itemList = newItems;
+        notifyDataSetChanged();
+    }
 
-        public ImageView itemImage;
-        public TextView itemTitle;
-        public TextView itemDescription;
-        public ImageButton heartButton;
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
+        ImageView itemImage;
+        TextView itemTitle;
+        TextView itemDescription;
+        ImageButton heartButton;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);

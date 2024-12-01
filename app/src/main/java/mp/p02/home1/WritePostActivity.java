@@ -26,48 +26,31 @@ public class WritePostActivity extends AppCompatActivity {
     private ImageView imageView;
     private Button buttonSelectImage;
     private Uri imageUri;
+    private ItemDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_post);
 
-        // Set up the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            // Add navigation and "완료" button logic
-            Button buttonComplete = findViewById(R.id.buttonComplete);
-            buttonComplete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleSubmit();
-                }
-            });
-        }
+        dbHelper = new ItemDatabaseHelper(this); // SQLite 헬퍼 초기화
 
-        // Initialize back button
-        ImageButton backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        // Initialize UI elements
+        // UI 초기화
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextContent = findViewById(R.id.editTextContent);
         imageView = findViewById(R.id.imageView);
         buttonSelectImage = findViewById(R.id.buttonSelectImage);
 
-        // Set up click listeners
-        buttonSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImageChooser();
-            }
-        });
+        // 이미지 선택 버튼
+        buttonSelectImage.setOnClickListener(v -> openImageChooser());
+
+        // 완료 버튼
+        Button buttonComplete = findViewById(R.id.buttonComplete);
+        buttonComplete.setOnClickListener(v -> handleSubmit());
+
+        // 뒤로가기 버튼
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> onBackPressed());
     }
 
     private void openImageChooser() {
@@ -98,19 +81,16 @@ public class WritePostActivity extends AppCompatActivity {
         String content = editTextContent.getText().toString();
 
         if (!title.isEmpty() && !content.isEmpty()) {
+            Item newItem = new Item(imageUri, title, content);
+            dbHelper.addItem(newItem); // SQLite에 데이터 저장
+
+            // 반환 데이터 설정
             Intent resultIntent = new Intent();
             resultIntent.putExtra("title", title);
             resultIntent.putExtra("content", content);
-
             if (imageUri != null) {
                 resultIntent.putExtra("imageUri", imageUri.toString());
             }
-
-            // 로그 추가
-            Log.d("WritePostActivity", "Title: " + title);
-            Log.d("WritePostActivity", "Content: " + content);
-            Log.d("WritePostActivity", "ImageUri: " + (imageUri != null ? imageUri.toString() : "null"));
-
             setResult(RESULT_OK, resultIntent);
             finish();
         } else {

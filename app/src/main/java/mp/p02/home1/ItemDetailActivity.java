@@ -33,12 +33,14 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         databaseHelper = new ItemDatabaseHelper(this);
 
+        // Toolbar 설정
         Toolbar toolbar = findViewById(R.id.top_app_bar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // View 초기화
         itemImageView = findViewById(R.id.itemImageView);
         itemTitleTextView = findViewById(R.id.itemTitleTextView);
         itemContentTextView = findViewById(R.id.itemContentTextView);
@@ -46,12 +48,13 @@ public class ItemDetailActivity extends AppCompatActivity {
         menuImage = findViewById(R.id.menu_image);
         navigationView = findViewById(R.id.navigation_view);
 
+        // Intent로 데이터 받기
         Intent intent = getIntent();
         itemId = intent.getIntExtra("item_id", -1);
 
         if (itemId == -1 || !databaseHelper.doesItemExist(itemId)) {
             Log.e("ItemDetailActivity", "Invalid or non-existent item ID received: " + itemId);
-            Toast.makeText(this, "Invalid or non-existent item ID.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Item does not exist or ID is invalid.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -60,14 +63,25 @@ public class ItemDetailActivity extends AppCompatActivity {
         String content = intent.getStringExtra("item_content");
         String imageUriString = intent.getStringExtra("item_image_uri");
 
-        itemTitleTextView.setText(title);
-        itemContentTextView.setText(content);
+        // 디버깅 로그
+        Log.d("ItemDetailActivity", "Item ID: " + itemId);
+        Log.d("ItemDetailActivity", "Title: " + title);
+        Log.d("ItemDetailActivity", "Content: " + content);
+        Log.d("ItemDetailActivity", "Image URI: " + imageUriString);
+
+        // 데이터 표시
+        itemTitleTextView.setText(title != null ? title : "No Title");
+        itemContentTextView.setText(content != null ? content : "No Content");
 
         if (imageUriString != null) {
             Uri imageUri = Uri.parse(imageUriString);
             itemImageView.setImageURI(imageUri);
+        } else {
+            // 기본 이미지 설정
+            itemImageView.setImageResource(R.drawable.button1);
         }
 
+        // 메뉴 버튼 클릭 이벤트
         menuImage.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
         navigationView.setNavigationItemSelectedListener(item -> {

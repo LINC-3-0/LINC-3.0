@@ -101,6 +101,19 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
-    public void updateHeartState(int id, boolean b) {
+    public void updateHeartState(int id, boolean isFavorite) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_HEART_STATE, isFavorite ? 1 : 0);
+
+        int rowsAffected = db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+
+        // 디버깅 로그
+        if (rowsAffected > 0) {
+            System.out.println("Heart state updated for item ID: " + id);
+        } else {
+            System.out.println("Failed to update heart state for item ID: " + id);
+        }
     }
 }

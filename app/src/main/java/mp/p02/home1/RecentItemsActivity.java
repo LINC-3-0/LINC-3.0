@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecentItemsActivity extends AppCompatActivity {
@@ -25,97 +22,55 @@ public class RecentItemsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
-    private ItemDatabaseHelper dbHelper; // SQLite 데이터베이스 헬퍼 인스턴스
+    private ItemDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent_items);
 
-        dbHelper = new ItemDatabaseHelper(this); // SQLite 데이터베이스 헬퍼 초기화
-
-        // 아이템 리스트 초기화
-        itemList = new ArrayList<>();
+        dbHelper = new ItemDatabaseHelper(this);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 비동기로 SQLite에서 저장된 아이템을 불러옴
+        // SQLite에서 데이터 로드
         loadItems();
 
-        // 기존에 추가된 아이템을 Intent로 받아옴
-        Intent intent = getIntent();
-        String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");
-        String imageUriString = intent.getStringExtra("imageUri");
+        // FloatingActionButton으로 글 작성 화면으로 이동
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(RecentItemsActivity.this, WritePostActivity.class);
+            startActivityForResult(intent, WRITE_POST_REQUEST_CODE);
+        });
 
-        // 로그 추가
-        Log.d("RecentItemsActivity", "Title: " + title);
-        Log.d("RecentItemsActivity", "Content: " + content);
-        Log.d("RecentItemsActivity", "ImageUri: " + imageUriString);
+        // 홈 버튼 클릭 이벤트
+        Button homeButton = findViewById(R.id.home_button);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(RecentItemsActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
 
-        if (title != null && content != null) {
-            int imageResource = R.drawable.button1; // Default image
-            Item newItem;
+        // 뒤로 가기 버튼 클릭 이벤트
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> finish());
+    }
 
-            if (imageUriString != null) {
-                Uri imageUri = Uri.parse(imageUriString);
-                newItem = new Item(imageUri, title, content);
-            } else {
-                newItem = new Item(imageResource, title, content);
-            }
-
-            // 여기서 itemList가 null이 아닌지 확인하고 null이라면 빈 ArrayList로 초기화합니다.
-            if (itemList == null) {
-                itemList = new ArrayList<>();
-            }
-
-            // SQLite에 추가된 아이템이 이미 존재하는지 확인 후 추가
-            if (!itemList.contains(newItem)) {
-                itemList.add(0, newItem); // List 상단에 추가
-                addItem(newItem); // 비동기로 SQLite 데이터베이스에 아이템 저장
-            }
-        }
-
+    private void loadItems() {
+        itemList = dbHelper.getAllItems();
         itemAdapter = new ItemAdapter(this, itemList);
         recyclerView.setAdapter(itemAdapter);
+    }
 
-        Button homeButton = findViewById(R.id.home_button);
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RecentItemsActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+    private void refreshItemList() {
+        List<Item> updatedItems = dbHelper.getAllItems();
+        itemAdapter.updateItems(updatedItems); // 어댑터 데이터 업데이트
+    }
 
-        Button recentButton = findViewById(R.id.recent_button);
-        recentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle the Recent Items button action
-            }
-        });
-
-        ImageButton backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        TextView appName = findViewById(R.id.app_name);
-        appName.setText("AppName");
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RecentItemsActivity.this, WritePostActivity.class);
-                startActivityForResult(intent, WRITE_POST_REQUEST_CODE);
-            }
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshItemList(); // 화면 재진입 시 데이터 갱신
     }
 
     @Override
@@ -127,50 +82,19 @@ public class RecentItemsActivity extends AppCompatActivity {
             String content = data.getStringExtra("content");
             String imageUriString = data.getStringExtra("imageUri");
 
-            int imageResource = R.drawable.button1; // Default image
+            if (title != null && content != null) {
+                Item newItem;
+                if (imageUriString != null) {
+                    Uri imageUri = Uri.parse(imageUriString);
+                    newItem = new Item(imageUri, title, content);
+                } else {
+                    newItem = new Item(R.drawable.button1, title, content);
+                }
 
-            Item newItem;
-
-            if (imageUriString != null) {
-                Uri imageUri = Uri.parse(imageUriString);
-                newItem = new Item(imageUri, title, content);
-            } else {
-                newItem = new Item(imageResource, title, content);
-            }
-
-            // 새로운 아이템이 리스트에 존재하지 않는 경우에만 추가
-            if (!itemList.contains(newItem)) {
-                itemList.add(0, newItem); // List 상단에 추가
-                addItem(newItem); // 비동기로 SQLite 데이터베이스에 아이템 저장
-
-                itemAdapter.notifyItemInserted(0);
-                recyclerView.scrollToPosition(0); // 추가된 항목으로 스크롤
+                dbHelper.addItem(newItem); // SQLite에 저장
+                refreshItemList(); // 데이터 새로고침
+                recyclerView.scrollToPosition(0); // 상단으로 스크롤
             }
         }
-    }
-
-    private void loadItems() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                itemList = dbHelper.getAllItems();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        itemAdapter = new ItemAdapter(RecentItemsActivity.this, itemList);
-                        recyclerView.setAdapter(itemAdapter);
-                    }
-                });
-            }
-        }).start();
-    }
-
-    private void addItem(final Item item) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dbHelper.addItem(item);
-            }
-        }).start();
     }
 }
